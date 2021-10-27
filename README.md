@@ -53,6 +53,27 @@ NewsData <- NewsData %>% select(-url, -timedelta)
 # Summarizations
 ```{r}
 
+plotImages <- ggplot(data = NewsData, aes(x=num_imgs, y=shares))
+plotImages + geom_jitter() +
+  labs(x= "Number of Images", y = "Shares")
+
+
+plotSubject <- ggplot(data = NewsData, aes(x=global_subjectivity, y=shares))
+plotSubject + geom_jitter() +
+  labs(x= "Global Subjectivity", y= "Shares")
+
+plotNumberWords <- ggplot(data = NewsData, aes(x=n_tokens_title, y=shares))
+plotNumberWords + geom_jitter() +
+  labs(x = "Number of Words in Title", y = "Shares")
+
+means <- c(mean(NewsData$num_imgs), mean(NewsData$global_subjectivity), mean(NewsData$n_tokens_title))
+SDs <- c(sd(NewsData$num_imgs), sd(NewsData$global_subjectivity), sd(NewsData$n_tokens_title))
+
+PlotSummaryStats <- tbl_df(cbind(means, SDs))
+
+tableChannelDay <- table(NewsData$data_channel_is_entertainment, NewsData$weekday_is_wednesday)
+tableChannelDay
+
 ```
 
 # Modeling
@@ -78,6 +99,15 @@ summary(model2)
 ```
 
 ```{r}
+#Fit Linear Regression model3 - Main Effect
+
+model3 <- lm(shares~ n_tokens_content + num_self_hrefs + num_videos + data_channel_is_socmed + weekday_is_friday + title_subjectivity, data=train)
+
+summary(model3)
+
+```
+
+```{r}
 #Random Forest Model using Cross-Validation
 rfmodel <- train(shares~ n_tokens_title + num_hrefs + num_imgs + average_token_length + data_channel_is_entertainment + kw_min_min + kw_max_min + kw_min_avg + kw_max_avg + kw_avg_avg + self_reference_min_shares + weekday_is_wednesday + global_subjectivity + title_sentiment_polarity, 
 data = train, method = "rf", trControl = trainControl(method= "repeatedcv", number = 5, repeats = 3), preProcess = c("center", "scale"))
@@ -87,6 +117,34 @@ data = train, method = "rf", trControl = trainControl(method= "repeatedcv", numb
 rfmodel
 
 confusionMatrix(rfmodel, newdata= test)
+```
+
+```{r}
+#Boosted Tree
+
+gbmGrid <-  expand.grid(interaction.depth = 1:4, 
+                        n.trees = c(25, 50, 100, 150, 200), 
+                        shrinkage = 0.1,
+                        n.minobsinnode = 10)
+
+nrow(gbmGrid)
+
+fitControl <- trainControl(method = "repeatedcv", number = 5, repeats = 3)
+
+boostFit <- train(shares~ n_tokens_title + num_hrefs + num_imgs + average_token_length + data_channel_is_entertainment + kw_min_min + kw_max_min + kw_min_avg + kw_max_avg + kw_avg_avg + self_reference_min_shares + weekday_is_wednesday + global_subjectivity + title_sentiment_polarity, 
+                data = train,
+                preProcess = c("center", "scale"),
+                trControl = fitControl,
+                method = "gbm",
+                tuneGrid = gbmGrid)
+
+boostPred <- predict(boostFit, newdata = test)
+
+boostRMSE <- sqrt(mean((boostPred-test$shares)^2))
+boostRMSE
+
+confusionMatrix(boostPred, test$shares)
+
 ```
 
 # Explanation of of the idea of a linear regression model-Stefanee Tillman
