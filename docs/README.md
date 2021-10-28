@@ -2,11 +2,11 @@
 title: "ST 558 Project 2"
 author: "Stefanee Tillman & Kaitlyn Bayley"
 date: "10/19/2021"
-output: html_document
+output: github_document
 ---
 
 ```{r}
-rmarkdown::render("C:/Users/Stefa/OneDrive/Documents/GitHub/Project2/Project2.Rmd",
+rmarkdown::render("C:/Users/Stefa/OneDrive/Documents/GitHub/Project2/ST558PR2.Rmd",
  output_format = "github_document",
  output_file = "docs/",
  output_options = list(
@@ -37,22 +37,17 @@ require(randomForest)
 ```{r}
 #Reading in Data
 NewsData<- read_excel("C:/Users/Stefa/Downloads/OnlineNewsPopularity.xlsx")
-
 #Subsetting Data
 NewsData <- NewsData %>% mutate(channel = case_when(data_channel_is_bus == 1 ~ "Business",data_channel_is_entertainment == 1 ~ "Entertainment",data_channel_is_lifestyle == 1 ~ "Lifestyle",data_channel_is_socmed == 1 ~ "SocialMedia",data_channel_is_tech == 1 ~ "Tech", data_channel_is_world == 1 ~ "World"))
-
 #Some of the output is NA, replace with other value to produce better results
 NewsData$channel <- replace_na(NewsData$channel, "Other")
 NewsData$channel <- as.factor(NewsData$channel) 
 print(NewsData)
-
 NewsData <- NewsData %>% select(-url, -timedelta)
-
 ```
 
 # Summarizations
 ```{r}
-
 ```
 
 # Modeling
@@ -73,7 +68,6 @@ summary(model1)
 ```{r}
 #Fit Linear Regression model1- Main Effect
 model2 <- lm(shares~ n_tokens_title + num_hrefs + num_imgs + average_token_length + data_channel_is_entertainment + kw_min_min + kw_max_min + kw_min_avg + kw_max_avg + kw_avg_avg + self_reference_min_shares + weekday_is_wednesday + global_subjectivity + title_sentiment_polarity, data=train)
-
 summary(model2)
 ```
 
@@ -81,16 +75,11 @@ summary(model2)
 #Random Forest Model using Cross-Validation
 rfmodel <- train(shares~ n_tokens_title + num_hrefs + num_imgs + average_token_length + data_channel_is_entertainment + kw_min_min + kw_max_min + kw_min_avg + kw_max_avg + kw_avg_avg + self_reference_min_shares + weekday_is_wednesday + global_subjectivity + title_sentiment_polarity, 
 data = train, method = "rf", trControl = trainControl(method= "repeatedcv", number = 5, repeats = 3), preProcess = c("center", "scale"))
-
-
-
 rfmodel
-
 confusionMatrix(rfmodel, newdata= test)
 ```
 
 # Explanation of of the idea of a linear regression model-Stefanee Tillman
 A linear regression model is a models that displays the relationship between two or more variables. Here we are demonstrating the relationship between Social Media and Shares. With Social Media being the predictor and shares being the response we are attempting to see the relationship between the two. Does social media have a significant effect on the amount of shares? Is there a correlation between the two variables.
-
 
 
