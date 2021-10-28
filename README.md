@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ST 558 Project 2
 ================
 Stefanee Tillman & Kaitlyn Bayley
@@ -220,3 +221,6 @@ print(rfmodel)
     ## 
     ## RMSE was used to select the optimal model using the smallest value.
     ## The final value used for the model was mtry = 1.
+=======
+
+>>>>>>> 34fd672cd5152664062eada43b9c1bc61692a96c
