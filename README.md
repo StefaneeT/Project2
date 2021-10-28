@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ST 558 Project 2
 ================
 Stefanee Tillman & Kaitlyn Bayley
@@ -8,19 +7,6 @@ Stefanee Tillman & Kaitlyn Bayley
 rmarkdown::render("C:/Users/Stefa/OneDrive/Documents/GitHub/Project2/ST558PR2new.Rmd",
  output_format = "github_document",
  output_file = "README.md",
-=======
----
-title: "ST 558 Project 2"
-author: "Stefanee Tillman & Kaitlyn Bayley"
-date: "10/19/2021"
-output: html_document
----
-
-```{r}
-rmarkdown::render("C:/Users/Stefa/OneDrive/Documents/GitHub/Project2/Project2.Rmd",
- output_format = "github_document",
- output_file = "docs/",
->>>>>>> ea10444536847c2fa6be877c1291cebe06ffc439
  output_options = list(
  toc = FALSE,
  toc_depth = 3,
@@ -30,15 +16,9 @@ keep_html = FALSE
 ))
 ```
 
-<<<<<<< HEAD
 # Required Packages
 
 ``` r
-=======
-# Required Packages 
-
-```{r, message= FALSE}
->>>>>>> ea10444536847c2fa6be877c1291cebe06ffc439
 require(readxl)
 require(dplyr)
 #install.packages("randomForest")
@@ -47,28 +27,19 @@ require(tidyr)
 require(caret)
 require(gbm)
 require(randomForest)
-<<<<<<< HEAD
 library(e1071)
 require(knitr)
 ```
 
-=======
-```
->>>>>>> ea10444536847c2fa6be877c1291cebe06ffc439
 # Introduction Section
 
 # Data
 
-<<<<<<< HEAD
 ``` r
-=======
-```{r}
->>>>>>> ea10444536847c2fa6be877c1291cebe06ffc439
 #Reading in Data
 NewsData<- read_excel("C:/Users/Stefa/Downloads/OnlineNewsPopularity.xlsx")
 
 #Subsetting Data
-<<<<<<< HEAD
 NewsData <- NewsData %>% filter(data_channel_is_lifestyle == 1) %>%
         select(-url, -timedelta, -data_channel_is_entertainment, -data_channel_is_bus, -data_channel_is_socmed, -data_channel_is_tech, -data_channel_is_world, -data_channel_is_lifestyle) 
 ```
@@ -78,26 +49,6 @@ NewsData <- NewsData %>% filter(data_channel_is_lifestyle == 1) %>%
 # Modeling
 
 ``` r
-=======
-NewsData <- NewsData %>% mutate(channel = case_when(data_channel_is_bus == 1 ~ "Business",data_channel_is_entertainment == 1 ~ "Entertainment",data_channel_is_lifestyle == 1 ~ "Lifestyle",data_channel_is_socmed == 1 ~ "SocialMedia",data_channel_is_tech == 1 ~ "Tech", data_channel_is_world == 1 ~ "World"))
-
-#Some of the output is NA, replace with other value to produce better results
-NewsData$channel <- replace_na(NewsData$channel, "Other")
-NewsData$channel <- as.factor(NewsData$channel) 
-print(NewsData)
-
-NewsData <- NewsData %>% select(-url, -timedelta)
-
-```
-
-# Summarizations
-```{r}
-
-```
-
-# Modeling
-```{r}
->>>>>>> ea10444536847c2fa6be877c1291cebe06ffc439
 #Split data into training and test set 70:30
 set.seed(1)
 dt = sort(sample(nrow(NewsData), nrow(NewsData) * .7))
@@ -105,7 +56,6 @@ train<- NewsData[dt,]
 test<- NewsData[-dt,]
 ```
 
-<<<<<<< HEAD
 # Explanation of of the idea of a linear regression model-Stefanee Tillman
 
 A linear regression model is a model that displays the relationship
@@ -117,15 +67,10 @@ on the amount of shares? Is there a correlation between the variables?
 
 ``` r
 #Fit Linear Regression Model 1- All Predictors
-=======
-```{r}
-#Fit Linear Regression model1- Main Effect
->>>>>>> ea10444536847c2fa6be877c1291cebe06ffc439
 model1 <- lm(shares~., data=train)
 summary(model1)
 ```
 
-<<<<<<< HEAD
     ## 
     ## Call:
     ## lm(formula = shares ~ ., data = train)
@@ -199,16 +144,10 @@ summary(model1)
 ``` r
 #Fit Linear Regression Model 2- Significant Variables
 model2 <- lm(shares~ n_tokens_title + num_hrefs + num_imgs + average_token_length + kw_min_min + kw_max_min + kw_min_avg + kw_max_avg + kw_avg_avg + self_reference_min_shares + weekday_is_wednesday + LDA_01 + global_subjectivity + title_sentiment_polarity, data=train)
-=======
-```{r}
-#Fit Linear Regression model1- Main Effect
-model2 <- lm(shares~ n_tokens_title + num_hrefs + num_imgs + average_token_length + data_channel_is_entertainment + kw_min_min + kw_max_min + kw_min_avg + kw_max_avg + kw_avg_avg + self_reference_min_shares + weekday_is_wednesday + global_subjectivity + title_sentiment_polarity, data=train)
->>>>>>> ea10444536847c2fa6be877c1291cebe06ffc439
 
 summary(model2)
 ```
 
-<<<<<<< HEAD
     ## 
     ## Call:
     ## lm(formula = shares ~ n_tokens_title + num_hrefs + num_imgs + 
@@ -281,22 +220,3 @@ print(rfmodel)
     ## 
     ## RMSE was used to select the optimal model using the smallest value.
     ## The final value used for the model was mtry = 1.
-=======
-```{r}
-#Random Forest Model using Cross-Validation
-rfmodel <- train(shares~ n_tokens_title + num_hrefs + num_imgs + average_token_length + data_channel_is_entertainment + kw_min_min + kw_max_min + kw_min_avg + kw_max_avg + kw_avg_avg + self_reference_min_shares + weekday_is_wednesday + global_subjectivity + title_sentiment_polarity, 
-data = train, method = "rf", trControl = trainControl(method= "repeatedcv", number = 5, repeats = 3), preProcess = c("center", "scale"))
-
-
-
-rfmodel
-
-confusionMatrix(rfmodel, newdata= test)
-```
-
-# Explanation of of the idea of a linear regression model-Stefanee Tillman
-A linear regression model is a models that displays the relationship between two or more variables. Here we are demonstrating the relationship between Social Media and Shares. With Social Media being the predictor and shares being the response we are attempting to see the relationship between the two. Does social media have a significant effect on the amount of shares? Is there a correlation between the two variables.
-
-
-
->>>>>>> ea10444536847c2fa6be877c1291cebe06ffc439
