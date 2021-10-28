@@ -1,0 +1,97 @@
+---
+title: "ST 558 Project 2"
+author: "Stefanee Tillman & Kaitlyn Bayley"
+date: "10/19/2021"
+output: github_document
+---
+
+```{r, eval=FALSE}
+rmarkdown::render("C:/Users/Stefa/OneDrive/Documents/GitHub/Project2/ST558PR2new.Rmd",
+ output_format = "github_document",
+ output_file = "README.md",
+ output_options = list(
+ toc = FALSE,
+ toc_depth = 3,
+ number_sections = FALSE,
+ df_print = "default",
+keep_html = FALSE
+))
+
+```
+
+# Required Packages 
+
+```{r, message= FALSE}
+require(readxl)
+require(dplyr)
+#install.packages("randomForest")
+library(randomForest)
+require(tidyr)
+require(caret)
+require(gbm)
+require(randomForest)
+library(e1071)
+require(knitr)
+
+```
+# Introduction Section
+
+# Data
+
+```{r}
+#Reading in Data
+NewsData<- read_excel("C:/Users/Stefa/Downloads/OnlineNewsPopularity.xlsx")
+
+#Subsetting Data
+NewsData <- NewsData %>% filter(data_channel_is_lifestyle == 1) %>%
+        select(-url, -timedelta, -data_channel_is_entertainment, -data_channel_is_bus, -data_channel_is_socmed, -data_channel_is_tech, -data_channel_is_world, -data_channel_is_lifestyle) 
+
+
+```
+
+# Summarizations
+
+
+# Modeling
+```{r}
+#Split data into training and test set 70:30
+set.seed(1)
+dt = sort(sample(nrow(NewsData), nrow(NewsData) * .7))
+train<- NewsData[dt,]
+test<- NewsData[-dt,]
+```
+
+# Explanation of of the idea of a linear regression model-Stefanee Tillman
+
+A linear regression model is a model that displays the relationship between two or more variables. Here we are demonstrating the relationship between Lifestyle and Shares. With the predictors used in the formula and shares being the response we are attempting to see the relationship between the two. Does Lifestyle have a significant effect on the amount of shares? Is there a correlation between the variables?
+
+```{r}
+#Fit Linear Regression Model 1- All Predictors
+model1 <- lm(shares~., data=train)
+summary(model1)
+```
+
+```{r}
+#Fit Linear Regression Model 2- Significant Variables
+model2 <- lm(shares~ n_tokens_title + num_hrefs + num_imgs + average_token_length + kw_min_min + kw_max_min + kw_min_avg + kw_max_avg + kw_avg_avg + self_reference_min_shares + weekday_is_wednesday + LDA_01 + global_subjectivity + title_sentiment_polarity, data=train)
+
+summary(model2)
+```
+
+# Explanation of of the idea of a Random Forest Ensemble-Stefanee Tillman
+A random forest is a machine learning technique that’s used to solve regression and classification problems. The Random Forest Technique extends the idea of bagging and is generally better than bagging.The Random Forest will create multiple trees from bootstrap samples and average the results. For this project, we are using the Random Forest model after subsetting the data_channel_is_lifestyle variable. After using the Cross Validation Method we are able to observe the RMSE and R^2 values for the predictor variables with shares as the response.
+
+```{r, cache=TRUE}
+#Random Forest Model using Cross-Validation
+
+rfmodel <- train(shares ~ n_tokens_title + num_hrefs + num_imgs + average_token_length + kw_min_min, data = train, method = "rf", trControl = trainControl(method= "cv", number = 5), preProcess = c("center", "scale"), tuneGrid = data.frame(mtry = 1:3))
+
+print(rfmodel)
+
+
+```
+
+
+
+
+

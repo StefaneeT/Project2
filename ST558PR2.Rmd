@@ -2,11 +2,11 @@
 title: "ST 558 Project 2"
 author: "Stefanee Tillman & Kaitlyn Bayley"
 date: "10/19/2021"
-output: html_document
+output: github_document
 ---
 
 ```{r}
-rmarkdown::render("C:/Users/Stefa/OneDrive/Documents/GitHub/Project2/Project2.Rmd",
+rmarkdown::render("C:/Users/Stefa/OneDrive/Documents/GitHub/Project2/ST558PR2.Rmd",
  output_format = "github_document",
  output_file = "docs/",
  output_options = list(
