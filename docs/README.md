@@ -1,7 +1,7 @@
 ---
 title: "ST 558 Project 2"
 author: "Stefanee Tillman & Kaitlyn Bayley"
-date: "10/28/2021"
+date: "10/27/2021"
 output: github_document
 ---
 
