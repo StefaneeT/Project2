@@ -117,3 +117,27 @@ confusionMatrix(rfmodel, newdata= test)
 A linear regression model is a models that displays the relationship between two or more variables. Here we are demonstrating the relationship between Social Media and Shares. With Social Media being the predictor and shares being the response we are attempting to see the relationship between the two. Does social media have a significant effect on the amount of shares? Is there a correlation between the two variables.
 
 
+```{r}
+#Boosted Tree Model
+
+gbmGrid <-  expand.grid(interaction.depth = 1:4,
+                        n.trees = c(25, 50, 100, 150, 200),
+                        shrinkage = 0.1,
+                        n.minobsinnode = 10)
+
+nrow(gbmGrid)
+
+fitControl <- trainControl(method = "repeatedcv", number = 5, repeats = 3)
+
+boostFit <- train(shares~ n_tokens_title + num_hrefs + num_imgs + average_token_length + kw_min_min,
+                data = train,
+                preProcess = c("center", "scale"),
+                trControl = fitControl,
+                method = "gbm",
+                tuneGrid = gbmGrid)
+
+print(boostFit)
+```
+# Explanation of Boosted Tree Model - Kaitlyn Bayley
+A Boosted Tree model offers a slower fitting of the model, but often leads to a better fit. In this strategy, each subsequent tree is fit to a modified version of the data, which allows the prediction to be updated and improved as the trees grow. Here, we use the Boosted Tree to predict shares after subsetting the data_channel_is_lifestyle variable.
+
