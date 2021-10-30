@@ -23,7 +23,9 @@ require(caret)
 require(gbm)
 require(randomForest)
 ```
-# Introduction Section
+# Introduction
+
+For this project, we are reviewing a dataset related to social media shares and popularity of articles from Mashable. We initially subsetted the data to analyze the lifestyle channel and find the best model to predict the popularity of an article based on the most significant variables. We can then automate this process to do the same for the other identified channels (entertainment, business, social media, technology, and world).
 
 # Data
 
@@ -41,6 +43,45 @@ NewsData <- NewsData %>% select(-url, -timedelta)
 
 # Summarizations
 ```{r}
+
+plotImages <- ggplot(data = NewsData, aes(x=num_imgs, y=shares))
+plotImages + geom_jitter() +
+  labs(x= "Number of Images", y = "Shares")
+
+#The data points on this plot, visualizing how many shares result based on the number of images, are clustered around the x-axis. It appears that more images does not necessarily translate to more shares.
+
+plotSubject <- ggplot(data = NewsData, aes(x=global_subjectivity, y=shares))
+plotSubject + geom_jitter() +
+  labs(x= "Global Subjectivity", y= "Shares")
+
+#This plot compares global subjectivity and the number of shares. The subjectivity is clustered around 0.5, which indicates that articles closer to neutral generate more shares.
+
+plotTitle <- ggplot(data = NewsData, aes(x=n_tokens_title, y=shares))
+plotTitle + geom_jitter() +
+  labs(x = "Number of Words in Title", y = "Shares")
+
+#This plot looks at the number of words in the title and how that affects the number of shares. It appears that titles that range from around 7-12 words or so in length generate more shares than title lengths outside of that range.
+
+summaryImages <- summarize(NewsData, mean(num_imgs), sd(num_imgs))
+
+summarySubject <- summarize(NewsData, mean(global_subjectivity), sd(global_subjectivity))
+
+summaryTitle <- summarize(NewsData, mean(n_tokens_title), sd(n_tokens_title))
+
+summaryStats <- tbl_df(cbind(summaryImages, summarySubject, summaryTitle))
+
+#These summary statistics of means and standard deviations help describe the variables plotted above. The mean number of images is around 5, the mean global subjectivity is just under 0.5, and the mean title length is around 10 words. 
+
+summaryStats
+
+#This categorical table shows the number of videos in an article and whether it was shared on a Wednesday. 
+
+tableVideosDay <- table(NewsData$num_videos, NewsData$weekday_is_wednesday)
+
+#This categorical table shows the number of videos in an article and whether it was shared on a Wednesday.
+
+tableVideosDay
+
 ```
 
 # Modeling
