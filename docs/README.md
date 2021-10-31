@@ -65,7 +65,7 @@ plotImages + geom_jitter() +
   labs(x= "Number of Images", y = "Shares")
 ```
 
-![plot](https://raw.githubusercontent.com/StefaneeT/Project2/main/image/plotImages.png)
+![plot](https://raw.githubusercontent.com/StefaneeT/Project2/main/image/PlotImages.png)
 
 ![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- --> The data
 points on this plot, visualizing how many shares result based on the
