@@ -1703,81 +1703,7 @@ set.seed(1)
 fit1 <- train(shares ~., data = train, method = "lm")
 ```
 
-    ## Warning in predict.lm(modelFit, newdata): prediction from a rank-deficient fit may
-    ## be misleading
-
-    ## Warning in predict.lm(modelFit, newdata): prediction from a rank-deficient fit may
-    ## be misleading
-
-    ## Warning in predict.lm(modelFit, newdata): prediction from a rank-deficient fit may
-    ## be misleading
-
-    ## Warning in predict.lm(modelFit, newdata): prediction from a rank-deficient fit may
-    ## be misleading
-
-    ## Warning in predict.lm(modelFit, newdata): prediction from a rank-deficient fit may
-    ## be misleading
-
-    ## Warning in predict.lm(modelFit, newdata): prediction from a rank-deficient fit may
-    ## be misleading
-
-    ## Warning in predict.lm(modelFit, newdata): prediction from a rank-deficient fit may
-    ## be misleading
-
-    ## Warning in predict.lm(modelFit, newdata): prediction from a rank-deficient fit may
-    ## be misleading
-
-    ## Warning in predict.lm(modelFit, newdata): prediction from a rank-deficient fit may
-    ## be misleading
-
-    ## Warning in predict.lm(modelFit, newdata): prediction from a rank-deficient fit may
-    ## be misleading
-
-    ## Warning in predict.lm(modelFit, newdata): prediction from a rank-deficient fit may
-    ## be misleading
-
-    ## Warning in predict.lm(modelFit, newdata): prediction from a rank-deficient fit may
-    ## be misleading
-
-    ## Warning in predict.lm(modelFit, newdata): prediction from a rank-deficient fit may
-    ## be misleading
-
-    ## Warning in predict.lm(modelFit, newdata): prediction from a rank-deficient fit may
-    ## be misleading
-
-    ## Warning in predict.lm(modelFit, newdata): prediction from a rank-deficient fit may
-    ## be misleading
-
-    ## Warning in predict.lm(modelFit, newdata): prediction from a rank-deficient fit may
-    ## be misleading
-
-    ## Warning in predict.lm(modelFit, newdata): prediction from a rank-deficient fit may
-    ## be misleading
-
-    ## Warning in predict.lm(modelFit, newdata): prediction from a rank-deficient fit may
-    ## be misleading
-
-    ## Warning in predict.lm(modelFit, newdata): prediction from a rank-deficient fit may
-    ## be misleading
-
-    ## Warning in predict.lm(modelFit, newdata): prediction from a rank-deficient fit may
-    ## be misleading
-
-    ## Warning in predict.lm(modelFit, newdata): prediction from a rank-deficient fit may
-    ## be misleading
-
-    ## Warning in predict.lm(modelFit, newdata): prediction from a rank-deficient fit may
-    ## be misleading
-
-    ## Warning in predict.lm(modelFit, newdata): prediction from a rank-deficient fit may
-    ## be misleading
-
-    ## Warning in predict.lm(modelFit, newdata): prediction from a rank-deficient fit may
-    ## be misleading
-
-    ## Warning in predict.lm(modelFit, newdata): prediction from a rank-deficient fit may
-    ## be misleading
-
+    
 ``` r
 print(fit1)
 ```
@@ -1899,3 +1825,16 @@ boostRMSE
 It appears that the boosted model is the declared winner. This is
 because on the test set the Boosted Model has the lowest RSME of
 5627.462.
+
+
+# Automation
+
+```r
+library(rmarkdown)
+apply(reports, MARGIN =1,
+      FUN = function(x){
+        render(input= "C:/Users/Stefa/OneDrive/Documents/GitHub/Project2/ST558PR2new.Rmd",
+               output_file = x[[1]], params = x[[2]])
+      })
+
+```
