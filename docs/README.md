@@ -1845,3 +1845,5 @@ apply(reports, MARGIN =1,
       })
 
 ```
+
+Here is our render code for the Automation. The Automate files for each data_channel_is* is inside the Github Repository. 
