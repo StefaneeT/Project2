@@ -64,7 +64,8 @@ plotImages <- ggplot(data = NewsData, aes(x=num_imgs, y=shares))
 plotImages + geom_jitter() +
   labs(x= "Number of Images", y = "Shares")
 ```
-![plot](https://raw.githubusercontent.com/StefaneeT/Project2/main/images/plotImages)
+
+![plot](https://raw.githubusercontent.com/StefaneeT/Project2/main/images/plotImages.png)
 
 ![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- --> The data
 points on this plot, visualizing how many shares result based on the
@@ -76,7 +77,7 @@ plotSubject <- ggplot(data = NewsData, aes(x=global_subjectivity, y=shares))
 plotSubject + geom_jitter() +
   labs(x= "Global Subjectivity", y= "Shares")
 ```
-![plot](https://raw.githubusercontent.com/StefaneeT/Project2/main/images/plotSubject)
+![plot](https://raw.githubusercontent.com/StefaneeT/Project2/main/images/plotSubject.png)
 
 ![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- --> This plot
 compares global subjectivity and the number of shares. The subjectivity
@@ -88,7 +89,7 @@ plotTitle <- ggplot(data = NewsData, aes(x=n_tokens_title, y=shares))
 plotTitle + geom_jitter() +
   labs(x = "Number of Words in Title", y = "Shares")
 ```
-![plot](https://raw.githubusercontent.com/StefaneeT/Project2/main/images/plotTitle)
+![plot](https://raw.githubusercontent.com/StefaneeT/Project2/main/images/plotTitle.png)
 
 ![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- --> This plot
 looks at the number of words in the title and how that affects the
