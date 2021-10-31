@@ -152,7 +152,9 @@ rfmodel <- train(shares ~ n_tokens_title + num_hrefs + num_imgs + average_token_
 
 print(rfmodel)
 ```
+# Boosted Tree Ensemble Explanation - Kaitlyn Bayley
 
+A Boosted Tree model offers a slower fitting of the model, but often leads to a better fit. In this strategy, each subsequent tree is fit to a modified version of the data, which allows the prediction to be updated and improved as the trees grow. Here, we use the Boosted Tree to predict shares after subsetting the data_channel_is_lifestyle variable.
 
 ```{r}
 #Boosted Tree
@@ -238,33 +240,6 @@ boostRMSE
 
 
 It appears that the boosted model is the declared winner. This is because on the test set the Boosted Model has the lowest RSME of 5627.462.
-
-# Automation
-
-```{r, bindings = FALSE}
-#Creating New Variable
-NewsData<- read_excel("C:/Users/Stefa/Downloads/OnlineNewsPopularity.xlsx")
-
-NewsData <- NewsData %>% 
-            mutate(Topic = case_when(
-               data_channel_is_lifestyle == 1 ~ "Lifestyle",
-               data_channel_is_entertainment == 1 ~ "Entertainment",
-               data_channel_is_bus == 1 ~ "Business",
-               data_channel_is_socmed == 1 ~ "SocialMedia",
-               data_channel_is_tech == 1 ~ "Tech",
-               data_channel_is_world == 1 ~ "World"
-               ))
-NewsData$Topic<- replace_na(NewsData$Topic, "Other")
-NewsData$Topic <- as.factor(NewsData$Topic)
-
-#Beginning Automation
-Channel<- unique(NewsData$Topic)
-output_file<- paste0(Channel, ".html")
-unlockBinding("params", environment())
-params<- lapply(Channel, FUN = function(Entertainment){list(channel = Entertainment)})
-reports<- tibble(output_file, params)
-reports
-```
 
 
 
