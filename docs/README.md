@@ -177,6 +177,7 @@ tableVideosDay
 This categorical table shows the number of videos in an article and
 whether it was shared on a Wednesday. \# Modeling
 
+# Modeling & Selection
 ``` r
 #Split data into training and test set 70:30
 set.seed(1)
@@ -338,6 +339,12 @@ print(rfmodel)
     ## 
     ## RMSE was used to select the optimal model using the smallest value.
     ## The final value used for the model was mtry = 1.
+
+
+# Boosted Tree Ensemble Explanation - Kaitlyn Bayley
+
+A Boosted Tree model offers a slower fitting of the model, but often leads to a better fit. In this strategy, each subsequent tree is fit to a modified version of the data, which allows the prediction to be updated and improved as the trees grow. Here, we use the Boosted Tree to predict shares after subsetting the data_channel_is_lifestyle variable.
+
 
 ``` r
 #Boosted Tree
